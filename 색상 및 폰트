@@ -1,0 +1,5 @@
+font-family: sans-serif;
+font-size: 80px;
+
+background: #40e0d0; = 앞면
+background: #ff0080; = 뒷면
