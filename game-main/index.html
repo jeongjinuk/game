@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Game</title>
+    <link href="css/card-style.css" rel="stylesheet">
+    <link href="css/cover.css" rel="stylesheet">
+    <!-- String.format 없어서 만든거  -->
+    <script src="js/common.js"></script>
+    <!-- 게임 시작시 카드개수 받고 랜덤 배열 만들어줌  -->
+    <!--  카드 추가 해줌  -->
+    <script src="js/card.js"></script>
+    <!-- reset 관련   -->
+    <script src="js/reset.js"></script>
+    <!-- 시간추가   -->
+</head>
+<body>
+    
+<!-- 컨테이너 만들기 네모로 이거랑?-->
+<!-- 입력받는 방법 카드 개수 설정 이것만?-->
+<!--횟수로 변경하는 것도 좋아보임 -->
+<div id="score" style="display: none;">0</div>
+<div id="moveCount">Moves: 0</div>
+
+
+</section>
+<div class="card__container">
+    <div class="card__section">
+        <script>
+            let first, second;
+            let disableDeck = false;
+            let visible = prompt("시작 시간 (초)")
+            let visibleTime = visible * 1000;
+            // click 횟수 - visibleTime 이 기록?
+            new Card(String.format, Card.start(8))
+                .cardHtmlBuilder()
+                .forEach(cardHtml => document.write(cardHtml));
+        </script>
+    </div>
+</div>
+</body>
+<script src="js/common-event.js"></script>
+<script src="js/click-score.js"></script>
+</html>
