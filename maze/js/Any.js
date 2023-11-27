@@ -1,6 +1,7 @@
 class Any{
+
     constructor() {
-        this.type = "T";
+        this.type = "wall";
         this.routeList = new Array(1,2,3,4); // 경로 값 상하좌우 이동 1 = 2 row 이런식
         this.curPosition = new Array(0,0); // 0은 x, 1은 y
     }
@@ -11,8 +12,7 @@ class Any{
         if (this.routeList.length == 0){
             return null;
         }
-        let routePosition = new Array();
-        routePosition[2] = this.routeList.splice(Math.floor(Math.random() * this.routeList.length), 1)[0];
+        let routePosition = [,,this.routeList.splice(Math.floor(Math.random() * this.routeList.length), 1)[0]];
         switch (routePosition[2]){
             case 1:
                 routePosition[0] = this.curPosition[0] + 2;
@@ -31,7 +31,6 @@ class Any{
                 routePosition[1] = this.curPosition[1] - 2;
                 break;
         }
-
         return routePosition;
     }
 

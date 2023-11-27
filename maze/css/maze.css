@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #2c3e50;
+    background-color: #1a2a6c;
 }
 .f {
     display: flex;
@@ -19,14 +19,14 @@ body {
     position: absolute;
     width: 20px;
     height: 20px;
-    background-color:#e74c3c;
+    background: #f64f59;
     border-radius: 50%;
     transition: transform 0.1s ease-out;
 }
 
 .wall {
     float: left;
-    background-color: #2c3e50;
+    background-color: #1a2a6c;
     width: 20px;
     height: 20px;
 }
@@ -34,4 +34,17 @@ body {
     float: left;
     width: 20px;
     height: 20px;
+}
+.T {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: turquoise;
+}
+.end{
+    background: orangered;
+    float: left;
+    width: 20px;
+    height: 20px;
+    z-index: 5;
 }

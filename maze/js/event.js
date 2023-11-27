@@ -1,7 +1,10 @@
+let travel = 0;
+
 document.addEventListener("DOMContentLoaded", function () {
     const container = document.querySelector("#maze");
     const movableElement = document.querySelector("#player");
     const walls = document.querySelectorAll(".wall");
+    const ends = document.querySelectorAll(".end");
 
     const step = 20;
     let isMoving = false;
@@ -36,12 +39,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!checkCollision(top, left)) {
             movableElement.style.transform = `translate(${newX}px, ${newY}px)`;
+            travel++;
+        }
+
+        if (isArrived(top, left)){
+            let format = `최단거리 : ${shortest} \nRecord : ${travel}`
+            alert(format);
+            location.reload();
         }
         setTimeout(() => {
             isMoving = false;
-        }, 150); // 일정 시간(예: 150ms) 아니면 이벤트가 연속으로 발생해서 벽통과함
+        }, 110); // 일정 시간(예: 100ms) 아니면 이벤트가 연속으로 발생해서 벽통과함
     });
 
+    function isArrived(x, y){
+        let arrived = false;
+        ends.forEach(end => {
+            const  endRect = end.getBoundingClientRect();
+            if (x == endRect.top &&
+                y == endRect.left){
+                arrived = true;
+            }
+        });
+        return arrived;
+    }
     function checkCollision(x, y) {
         let isCollision = false;
         walls.forEach(wall => {
@@ -51,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 isCollision = true;
             }
         });
-
         return isCollision;
     }
 });

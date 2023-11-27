@@ -13,17 +13,16 @@
 <div class="f">
     <div class="maze" id="maze">
         <div class="movable" id="player"></div>
-        <!-- 미로의 벽 -->
+        <!-- 미로의 벽 생성-->
         <script>
-            let build = new MazeBuilder().build();
-            build.forEach(mazeRow =>
-                mazeRow.forEach(mazeCol =>
-                    document.write(mazeCol.getHTML())));
+            let mazeBuilder = new MazeBuilder();
+            mazeBuilder.build()
+                .forEach(mazeRow =>
+                    mazeRow.forEach(mazeCol =>
+                        document.write(mazeCol.getHTML())));
+            let shortest = mazeBuilder.root;
         </script>
-
     </div>
-
-
 </div>
 <script src="maze/js/event.js"></script>
 </body>
