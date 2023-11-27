@@ -4,7 +4,7 @@ let reset = () => {
         flag = flag && card.style.pointerEvents === "none";
     }
     if (flag) {
-        alert(score - visible + "점 입니다.");
+        alert(117- (score + visible)  + "점 입니다.");
         location.reload();
         return;
     }

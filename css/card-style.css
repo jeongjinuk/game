@@ -62,3 +62,13 @@
   background: #ff0080;
   transform: rotateY(180deg);
 }
+
+/* 무브카운트 */
+
+#moveCount {
+  font-family: sans-serif;
+  font-size: 30px;
+  text-align: center;
+  margin-top: 50px;
+  margin-right: 600px;
+}
