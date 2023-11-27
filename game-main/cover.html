@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/cover.css" rel="stylesheet">
+</head>
+<body>
+<div>
+    <div >311</div>
+</div>
+
+<script>
+    String.format = function () {
+        let args = arguments;
+        return args[0].replace(/{(\d+)}/g, function (match, num) {
+            num = Number(num) + 1;
+            return typeof (args[num]) != undefined ? args[num] : match;
+        });
+    };
+    let temp =
+        '<div class="cover">' +
+            '<div id="cover--number">{0}</div></div>';
+    document.write(String.format(temp, 1));
+</script>
+</body>
+</html>
