@@ -19,7 +19,7 @@ class MazeBuilder {
             }
         }
         this.createdMaze();
-        // this.increasedDifficulty();
+        this.increasedDifficulty();
         this.setShortestRoute();
         return this.maze;
     }
@@ -84,12 +84,17 @@ class MazeBuilder {
     // 오류 있음 마지막 도착지까지 연결된 경로가 존재하지 않을 수 있음
     setShortestRoute() {
         const copy = JSON.parse(JSON.stringify(this.maze));
-        const q = [];
+        // const copy = this.maze;
+        let q = [];
         q.push([0,0,1]); // x, y, 이동했는 횟수
 
-        while (q.length && q[0][0] != this.size - 1 && q[0][1] != this.size - 1) {
-            q.sort((o1, o2) => o2[2] - o1[2]);
+        while (q.length) {
             let pop = q.shift();
+            if (pop[0] == this.size - 1 && pop[1] == this.size - 1){
+                this.route = pop[2];
+                break;
+            }
+            // copy[pop[0]][pop[1]].type = "T";
             copy[pop[0]][pop[1]].type = false;
             for (let i = 0; i < 4; i++) {
                 let nx = pop[0] + this.x[i];
@@ -97,9 +102,11 @@ class MazeBuilder {
                 if (this.isMazeRouteRange(nx, ny) && copy[nx][ny].type) {
                     q.push([nx, ny, pop[2]+1]);
                 }
+                // if (this.isMazeRouteRange(nx, ny) && (copy[nx][ny].type != "T" && copy[nx][ny].type)) {
+                //     q.push([nx, ny, pop[2]+1]);
+                // }
             }
         }
-        this.route = q[0][2];
     }
 
     // 미로 난이도 올리기

@@ -8,6 +8,8 @@ class Any{
     getHTML(){
         if(this.type == "end"){
             return `<div class='end'></div>`;
+        }else if(this.type == "T"){
+            return `<div class='T'></div>`;
         }
         return `<div class='${this.type ? "road" : "wall"}'></div>`;
     }
