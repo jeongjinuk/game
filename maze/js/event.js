@@ -16,6 +16,31 @@ document.addEventListener("DOMContentLoaded", function () {
         let newY = playerRect.top - container.getBoundingClientRect().top;
         let top = movableElement.getBoundingClientRect().top;
         let left = movableElement.getBoundingClientRect().left;
+
+        let waitTime = () => {isMoving = false};
+        let isArrived = (x, y) => {
+            let arrived = false;
+            ends.forEach(end => {
+                const  endRect = end.getBoundingClientRect();
+                if (x == endRect.top &&
+                    y == endRect.left){
+                    arrived = true;
+                }
+            });
+            return arrived;
+        }
+        let checkCollision = (x, y) => {
+            let isCollision = false;
+            walls.forEach(wall => {
+                const wallRect = wall.getBoundingClientRect();
+                if ( x ==  wallRect.top &&
+                    y ==  wallRect.left) {
+                    isCollision = true;
+                }
+            });
+            return isCollision;
+        }
+
         isMoving = true;
 
         switch (e.key) {
@@ -41,37 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
             movableElement.style.transform = `translate(${newX}px, ${newY}px)`;
             travel++;
         }
-
         if (isArrived(top, left)){
+            clearTimeout(waitTime);
             let format = `최단거리 : ${shortest} \nRecord : ${travel}`
             alert(format);
             location.reload();
         }
-        setTimeout(() => {
-            isMoving = false;
-        }, 110); // 일정 시간(예: 100ms) 아니면 이벤트가 연속으로 발생해서 벽통과함
+        setTimeout(waitTime, 110); // 일정 시간(예: 100ms) 아니면 이벤트가 연속으로 발생해서 벽통과함
     });
 
-    function isArrived(x, y){
-        let arrived = false;
-        ends.forEach(end => {
-            const  endRect = end.getBoundingClientRect();
-            if (x == endRect.top &&
-                y == endRect.left){
-                arrived = true;
-            }
-        });
-        return arrived;
-    }
-    function checkCollision(x, y) {
-        let isCollision = false;
-        walls.forEach(wall => {
-            const wallRect = wall.getBoundingClientRect();
-            if ( x ==  wallRect.top &&
-                y ==  wallRect.left) {
-                isCollision = true;
-            }
-        });
-        return isCollision;
-    }
+
 });

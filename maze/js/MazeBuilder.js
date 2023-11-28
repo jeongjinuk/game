@@ -1,11 +1,10 @@
 class MazeBuilder {
 
     constructor() {
-        this.roadType = "road";
-        this.endType = "end";
+        this.x = [1, -1, 0, 0];
+        this.y = [0, 0, 1, -1];
         this.size = 39;
         this.maze = new Array(this.size);
-        this.stack = new Array();
         for (let i = 0; i < this.size; i++) {
             this.maze[i] = new Array();
         }
@@ -14,150 +13,131 @@ class MazeBuilder {
     build() {
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
-                this.maze[i][j] = new Any();
+                let any = new Any();
+                any.curPosition = [i, j];
+                this.maze[i][j] = any;
             }
         }
-        this.createMaze();
-        this.startAndEndPoint();
-        this.findWalls();
-        this.shortestRoot();
+        this.createdMaze();
+        this.increasedDifficulty();
+        this.setShortestRoute();
         return this.maze;
     }
-
-    // 최단거리
-    shortestRoot() {
-        const copy = JSON.parse(JSON.stringify(this.maze)); // 그대로 써야함
-        // const copy = this.maze;
-        let q = [];
-        // 출발지 0,0
-        // 방문지 type = T
-        // [x,y,count]횟수
-        q.push([0, 0, 1]);
-        let x = [1, -1, 0, 0];
-        let y = [0, 0, 1, -1];
-        while (q.length) {
-            let pop = q.shift();
-            if (pop[0] == this.size - 1 && pop[1] == this.size - 1) {
-                this.root = pop[2];
-                return;
-            }
-            copy[pop[0]][pop[1]].type = "T";
-            for (let i = 0; i < 4; i++) {
-                let nx = pop[0] + x[i];
-                let ny = pop[1] + y[i];
-
-                if (nx < 0 ||
-                    ny < 0 ||
-                    nx > this.size - 1 ||
-                    ny > this.size - 1 ||
-                    copy[nx][ny].type == "wall" ||
-                    copy[nx][ny].type == "T") {
-                    continue;
-                }
-                q.push([nx, ny, pop[2]+1]);
-            }
-        }
+    // 유틸
+    isMazeRouteRange(x, y) {
+        return x >= 0 &&
+            y >= 0 &&
+            x <= this.size - 1 &&
+            y <= this.size - 1;
     }
 
+    //미로 만들기
+    createdMaze() {
+        const stack = [];
+        let start = this.maze[Math.floor(Math.random() * this.size)][Math.floor(Math.random() * this.size)];
+        start.type = true;
+        stack.push(start);
 
-    findWalls() {
-        let walls = [];
-        const copy = JSON.parse(JSON.stringify(this.maze));
+        while (stack.length) {
+            let cur = stack[stack.length-1];
+            let nextRoute = cur.getNext(2,0,true);
 
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                if (copy[i][j].type == "wall") {
-                    let coor = [];
-                    this.getLongWallCoordinates(i, j, copy, coor);
-                    walls.push(coor);
-                }
+            if (nextRoute == null) {
+                stack.pop();
+                continue;
+            }
+
+            if (this.isMazeRouteRange(nextRoute[0], nextRoute[1]) && !this.maze[nextRoute[0]][nextRoute[1]].type) {
+
+                let curNode = this.maze[nextRoute[0]][nextRoute[1]];
+                curNode.type = true;
+
+                let wall = cur.getNext(1, nextRoute[2], false);
+                this.maze[wall[0]][wall[1]].type = true;
+
+                stack.push(curNode);
             }
         }
-        // 벽자르기
-        walls.forEach(wall => {
-            let stat = wall.splice(0, wall.length / 2);
-            stat = stat.splice(stat.length/ 2, 3);
-            let mid = wall.splice(wall.length / 2, 3);
-            stat.forEach(arr => {
-                this.maze[arr[0]][arr[1]].type = this.roadType;
-            })
-            mid.forEach(arr => {
-                this.maze[arr[0]][arr[1]].type = this.roadType;
-            });
-        });
+        this.setStartAndEndPoint();
     }
-
-    getLongWallCoordinates(i, j, copy, coor) {
-        if (i < 0 || j < 0 || i > this.size - 1 || j > this.size - 1 || copy[i][j].type != "wall") {
-            return;
-        }
-        copy[i][j].type = "T";
-        coor.push([i, j]);
-        this.getLongWallCoordinates(i + 1, j, copy, coor);
-        this.getLongWallCoordinates(i - 1, j, copy, coor);
-        this.getLongWallCoordinates(i, j + 1, copy, coor);
-        this.getLongWallCoordinates(i, j - 1, copy, coor);
-    }
-
-
-    startAndEndPoint() {
+    // 끝지정 시작 지정
+    setStartAndEndPoint() {
         let row0 = this.maze[0];
         let row1 = this.maze[1];
         let row2 = this.maze[this.size - 1];
         let row3 = this.maze[this.size - 2];
 
-        row0[0].type = this.roadType;
-        row0[1].type = this.roadType;
-        row1[0].type = this.roadType;
-        row1[1].type = this.roadType;
+        row0[0].type = true;
+        row0[1].type = true;
+        row1[0].type = true;
+        row1[1].type = true;
 
-        row2[this.size - 1].type = this.endType;
-        row2[this.size - 2].type = this.roadType;
-        row3[this.size - 1].type = this.roadType;
-        row3[this.size - 2].type = this.roadType;
+        row2[this.size - 1].type = "end";
+        row2[this.size - 2].type = true;
+        row3[this.size - 1].type = true;
+        row3[this.size - 2].type = true;
     }
 
-    //백트래킹
-    createMaze() {
-        let startPosition = [Math.floor(Math.random() * this.size), Math.floor(Math.random() * this.size)];
-        let start = this.maze[startPosition[0]][startPosition[1]];
-        start.curPosition = startPosition;
-        start.type = this.roadType;
-        this.stack.push(start);
+    // 밑에도 Any를 이용하고 싶은데 이게 또 만들어줘야함
+    // 가장 최단 경로 검색
+    setShortestRoute() {
+        const copy = JSON.parse(JSON.stringify(this.maze));
+        const q = [];
+        q.push([0,0,1]); // x, y, 이동했는 횟수
 
-        while (this.stack.length) {
-            let pop = this.stack.pop();
-            this.stack.push(pop);
-
-            let routePosition = pop.getRoutePosition();
-
-            if (this.isNullRoute(routePosition)) {
-                this.stack.pop();
-                continue;
+        while (q.length && q[0][0] != this.size - 1 && q[0][1] != this.size - 1) {
+            q.sort((o1, o2) => o2[2] - o1[2]);
+            let pop = q.shift();
+            copy[pop[0]][pop[1]].type = false;
+            for (let i = 0; i < 4; i++) {
+                let nx = pop[0] + this.x[i];
+                let ny = pop[1] + this.y[i];
+                if (this.isMazeRouteRange(nx, ny) && copy[nx][ny].type) {
+                    q.push([nx, ny, pop[2]+1]);
+                }
             }
+        }
+        this.route = q[0][2];
+    }
 
-            if (this.isMazeRouteRange(routePosition)) continue;
-
-            let curNode = this.maze[routePosition[0]][routePosition[1]];
-            curNode.curPosition = routePosition;
-            curNode.type = this.roadType;
-
-            let wallPosition = pop.getWallPosition(routePosition[2]);
-            let wallNode = this.maze[wallPosition[0]][wallPosition[1]];
-            wallNode.type = this.roadType;
-            this.stack.push(curNode);
+    // 미로 난이도 올리기
+    increasedDifficulty() {
+        const walls = [];
+        const copy = JSON.parse(JSON.stringify(this.maze));
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                if (!copy[i][j].type) {
+                    const coordinate = [];
+                    this.wallSearch(i, j, copy, coordinate);
+                    walls.push(coordinate);
+                }
+            }
+        }
+        // 벽자르기 여러 루트가 생길 수 있도록
+        this.spliceWalls(walls);
+    }
+    // 벽 좌표 탐색
+    wallSearch(i, j, copy, coor) {
+        if (this.isMazeRouteRange(i, j) && !copy[i][j].type){
+            copy[i][j].type = true;
+            coor.push([i, j]);
+            for (let k = 0; k < 4; k++) {
+                this.wallSearch(i + this.x[k], j + this.y[k], copy, coor);
+            }
         }
     }
-
-    isMazeRouteRange(routePosition) {
-        return routePosition[0] < 0 ||
-            routePosition[1] < 0 ||
-            routePosition[0] > this.size - 1 ||
-            routePosition[1] > this.size - 1 ||
-            this.maze[routePosition[0]][routePosition[1]].type == "road";
-    }
-
-    isNullRoute(routePosition) {
-        return routePosition == null;
+    // 미로를 더 복잡하게 만들기 위해서
+    spliceWalls(walls){
+        const setRoad = (coors) => coors.forEach(coor => this.maze[coor[0], coor[1]].type = true);
+        walls
+            .filter(value => value.length > 20) // 벽길이가 40 넘어갈때만
+            .forEach(wall => {
+            let start = wall.splice(0, wall.length / 2).splice(wall.length/2/2, 3);
+            let mid = wall.splice(wall.length / 2, 3);
+            let end = wall.splice(wall.length / 2, wall.size).splice(wall.length/2/2, 3);
+            setRoad(start);
+            setRoad(mid);
+            setRoad(end);
+        });
     }
 }
