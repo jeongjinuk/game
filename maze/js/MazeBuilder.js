@@ -19,7 +19,7 @@ class MazeBuilder {
             }
         }
         this.createdMaze();
-        this.increasedDifficulty();
+        // this.increasedDifficulty();
         this.setShortestRoute();
         return this.maze;
     }
@@ -47,7 +47,8 @@ class MazeBuilder {
                 continue;
             }
 
-            if (this.isMazeRouteRange(nextRoute[0], nextRoute[1]) && !this.maze[nextRoute[0]][nextRoute[1]].type) {
+            if (this.isMazeRouteRange(nextRoute[0], nextRoute[1]) &&
+                !this.maze[nextRoute[0]][nextRoute[1]].type) {
 
                 let curNode = this.maze[nextRoute[0]][nextRoute[1]];
                 curNode.type = true;
@@ -80,6 +81,7 @@ class MazeBuilder {
 
     // 밑에도 Any를 이용하고 싶은데 이게 또 만들어줘야함
     // 가장 최단 경로 검색
+    // 오류 있음 마지막 도착지까지 연결된 경로가 존재하지 않을 수 있음
     setShortestRoute() {
         const copy = JSON.parse(JSON.stringify(this.maze));
         const q = [];
