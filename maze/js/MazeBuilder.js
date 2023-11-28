@@ -40,7 +40,7 @@ class MazeBuilder {
 
         while (stack.length) {
             let cur = stack[stack.length-1];
-            let nextRoute = cur.getNext(2,0,true);
+            let nextRoute = cur.getNext(2,0);
 
             if (nextRoute == null) {
                 stack.pop();
@@ -52,7 +52,7 @@ class MazeBuilder {
                 let curNode = this.maze[nextRoute[0]][nextRoute[1]];
                 curNode.type = true;
 
-                let wall = cur.getNext(1, nextRoute[2], false);
+                let wall = cur.getNext(1, nextRoute[2]);
                 this.maze[wall[0]][wall[1]].type = true;
 
                 stack.push(curNode);
