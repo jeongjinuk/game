@@ -2,8 +2,8 @@ class Any{
 
     constructor() {
         this.type = false;
-        this.routeList = new Array(1,2,3,4); // 경로 값 상하좌우 이동 1 = 2 row 이런식
-        this.curPosition = new Array(0,0); // 0은 x, 1은 y
+        this.routeList = [1,2,3,4]; // 경로 값 상하좌우 이동 1 = 2 row 이런식
+        this.curPosition = [0,0]; // 0은 x, 1은 y
     }
     getHTML(){
         if(this.type == "end"){

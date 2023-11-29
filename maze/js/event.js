@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (isArrived(top, left)){
             clearTimeout(waitTime);
-            let format = `최단거리 : ${shortest} \nRecord : ${travel}`
+            let format = `최단거리 : ${shortestRoute} \nRecord : ${travel}`
             alert(format);
             location.reload();
         }

@@ -15,13 +15,11 @@
         <div class="movable" id="player"></div>
         <!-- 미로의 벽 생성-->
         <script>
-            let mazeBuilder = new MazeBuilder();
-            mazeBuilder.build()
+             new MazeBuilder().build()
                 .forEach(mazeRow =>
                     mazeRow.forEach(mazeCol =>
                         document.write(mazeCol.getHTML())));
-            let shortest = mazeBuilder.route;
-            console.log(shortest);
+            console.log(shortestRoute);
         </script>
     </div>
 </div>
