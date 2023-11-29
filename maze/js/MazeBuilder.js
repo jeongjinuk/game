@@ -34,8 +34,8 @@ const wallSearch = (i, j, copy, coor) => {
 // 가장 최단 경로 검색
 // 오류 있음 마지막 도착지까지 연결된 경로가 존재하지 않을 수 있음
 const setShortestRoute = () => {
-    // const copy = JSON.parse(JSON.stringify(maze));
-    const copy = maze;
+    const copy = JSON.parse(JSON.stringify(maze));
+    // const copy = maze;
     const q = [];
     q.push([0, 0, 1]); // x, y, 이동했는 횟수
 
@@ -45,17 +45,17 @@ const setShortestRoute = () => {
             shortestRoute = pop[2];
             break;
         }
-        copy[pop[0]][pop[1]].type = "T";
-        // copy[pop[0]][pop[1]].type = false;
+        // copy[pop[0]][pop[1]].type = "T";
+        copy[pop[0]][pop[1]].type = false;
         for (let i = 0; i < 4; i++) {
             let nx = pop[0] + x[i];
             let ny = pop[1] + y[i];
-            // if (this.isMazeRouteRange(nx, ny) && copy[nx][ny].type) {
-            //     q.push([nx, ny, pop[2]+1]);
-            // }
-            if (isMazeRouteRange(nx, ny) && (copy[nx][ny].type != "T" && copy[nx][ny].type)) {
-                q.push([nx, ny, pop[2] + 1]);
+            if (this.isMazeRouteRange(nx, ny) && copy[nx][ny].type) {
+                q.push([nx, ny, pop[2]+1]);
             }
+            // if (isMazeRouteRange(nx, ny) && (copy[nx][ny].type != "T" && copy[nx][ny].type)) {
+            //     q.push([nx, ny, pop[2] + 1]);
+            // }
         }
     }
 }
