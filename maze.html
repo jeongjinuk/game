@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>미로 찾기</title>
-    <link href="maze/css/maze.css" rel="stylesheet">
-    <script src="maze/js/MazeBuilder.js"></script>
-    <script src="maze/js/Any.js"></script>
+    <link href="css/maze-style.css" rel="stylesheet">
+    <script src="js/MazeBuilder.js"></script>
+    <script src="js/MazeCell.js"></script>
 
 </head>
 <body>
@@ -15,7 +15,8 @@
         <div class="movable" id="player"></div>
         <!-- 미로의 벽 생성-->
         <script>
-             new MazeBuilder().build()
+            new MazeBuilder(39)
+                .build()
                 .forEach(mazeRow =>
                     mazeRow.forEach(mazeCol =>
                         document.write(mazeCol.getHTML())));
@@ -23,6 +24,6 @@
         </script>
     </div>
 </div>
-<script src="maze/js/event.js"></script>
+<script src="js/maze-event.js"></script>
 </body>
 </html>

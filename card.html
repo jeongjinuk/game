@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Game</title>
+    <link href="css/card-style.css" rel="stylesheet">
+    <!-- 게임 시작시 카드개수 받고 랜덤 배열 만들어줌  -->
+    <!--  카드 추가 해줌  -->
+    <script src="js/cardBuilder.js"></script>
+</head>
+<body>
+<div id="score" style="display: none;">0</div>
+<div id="moveCount">Moves: 0</div>
+</section>
+<div class="card__container">
+    <div class="card__section">
+        <!-- 카드 생성-->
+        <script>
+            let visible = prompt("시작 시간 (초)")
+            let visibleTime = visible * 1000;
+            new CardBuilder(8)
+                .start()
+                .build()
+                .forEach(cardHtml => document.write(cardHtml));
+        </script>
+    </div>
+</div>
+</body>
+<script src="js/card-event.js"></script>
+</html>

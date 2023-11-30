@@ -1,14 +1,16 @@
-class Any{
+class MazeCell {
 
-    constructor() {
+    constructor(x, y) {
         this.type = false;
         this.routeList = [1,2,3,4]; // 경로 값 상하좌우 이동 1 = 2 row 이런식
-        this.curPosition = [0,0]; // 0은 x, 1은 y
+        this.curPosition = [x,y]; // 0은 x, 1은 y
     }
+
     getHTML(){
         if(this.type == "end"){
             return `<div class='end'></div>`;
-        }else if(this.type == "T"){
+        }
+        else if(this.type == "T"){
             return `<div class='T'></div>`;
         }
         return `<div class='${this.type ? "road" : "wall"}'></div>`;
@@ -41,5 +43,4 @@ class Any{
         }
         return next;
     }
-
 }
