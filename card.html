@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Card Game</title>
+    <title>카드 짝 맞추기</title>
     <link href="css/card-style.css" rel="stylesheet">
     <!-- 게임 시작시 카드개수 받고 랜덤 배열 만들어줌  -->
     <!--  카드 추가 해줌  -->
@@ -16,7 +16,7 @@
     <div class="card__section">
         <!-- 카드 생성-->
         <script>
-            let visible = prompt("시작 시간 (초)")
+            let visible = prompt("힌트 보기(초)")
             let visibleTime = visible * 1000;
             new CardBuilder(8)
                 .start()
