@@ -16,7 +16,7 @@ class MazeBuilder {
         }
     }
     build() {
-        this.#createdMaze();
+        this.#createdMaze(maze[Math.floor(Math.random() * size)][Math.floor(Math.random() * size)]);
         this.#setStartAndEndPoint();
         this.#increasedDifficulty();
         this.#setShortestRoute();
@@ -29,32 +29,19 @@ class MazeBuilder {
     }
 
     // 미로생성
-    #createdMaze() {
-        const stack = [];
-        let start = maze[Math.floor(Math.random() * size)][Math.floor(Math.random() * size)];
-        start.type = true;
-        stack.push(start);
-
-        while (stack.length) {
-            let cur = stack[stack.length - 1];
-            let nextRoute = cur.getNext(2, 0);
-
-            if (nextRoute == null) {
-                stack.pop();
+    #createdMaze(mazeCell){
+        mazeCell.type = true; // 시작을 길로 바꿔줌
+        while (mazeCell.routeList.length > 0){ // 갈 수 있는 경로수가 0이면 종료
+            let next = mazeCell.getNext(2, 0); // 경로를 랜덤으로 들고옴
+            //만약 미로 사이즈를 넘거나, 방문했던 곳이면 지나감
+            if (!this.#isMazeRouteRange(next[0], next[1]) || maze[next[0]][next[1]].type){
                 continue;
             }
-
-            if (this.#isMazeRouteRange(nextRoute[0], nextRoute[1]) &&
-                !maze[nextRoute[0]][nextRoute[1]].type) {
-
-                let curNode = maze[nextRoute[0]][nextRoute[1]];
-                curNode.type = true;
-
-                let wall = cur.getNext(1, nextRoute[2]);
-                maze[wall[0]][wall[1]].type = true;
-
-                stack.push(curNode);
-            }
+            // 아니라면 다음 경로를 길로 바꿔주고, 벽도 길로 바꿔줌
+            let cur = maze[next[0]][next[1]];
+            let wall = mazeCell.getNext(1, next[2]);
+            maze[wall[0]][wall[1]].type = true;
+            this.#createdMaze(cur); // 다음 경로를 다시 재귀호출
         }
     }
 
@@ -67,12 +54,8 @@ class MazeBuilder {
         const q = [];
         q.push([0, 0, 1]); // x, y, 이동했는 횟수
 
-        while (q.length) {
+        while (q.length && !(q[0][0] == size - 1 && q[0][1] == size - 1)) {
             let pop = q.shift();
-            if (pop[0] == size - 1 && pop[1] == size - 1) {
-                shortestRoute = pop[2];
-                break;
-            }
             // copy[pop[0]][pop[1]].type = "T";
             copy[pop[0]][pop[1]].type = false;
             for (let i = 0; i < 4; i++) {
@@ -86,6 +69,7 @@ class MazeBuilder {
                 // }
             }
         }
+        shortestRoute = q[0][2];
     }
 
     // 끝지정 시작 지정
